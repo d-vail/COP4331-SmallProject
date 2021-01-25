@@ -1,0 +1,93 @@
+// =================
+// Color Palette
+// =================
+
+// Primary Color - Indigo (Vivid)
+$indigo-vivid-900: #061178;
+$indigo-vivid-800: #0B1D96;
+$indigo-vivid-700: #132DAD;
+$indigo-vivid-600: #1D3DBF;
+$indigo-vivid-500: #2251CC;
+$indigo-vivid-400: #3A66DB;
+$indigo-vivid-300: #5E8AEE;
+$indigo-vivid-200: #88B1FC;
+$indigo-vivid-100: #B0D0FF;
+$indigo-vivid-000: #D9E8FF;
+
+// Neutrals - Cool Grey
+$cool-grey-900: #1F2933;
+$cool-grey-800: #323F4B;
+$cool-grey-700: #3E4C59;
+$cool-grey-600: #52606D;
+$cool-grey-500: #616E7C;
+$cool-grey-400: #7B8794;
+$cool-grey-300: #9AA5B1;
+$cool-grey-200: #CBD2D9;
+$cool-grey-100: #E4E7EB;
+$cool-grey-000: #F5F7FA;
+
+// Supporting Colors
+// Light Blue (Vivid)
+$light-blue-vivid-900: #035388;
+$light-blue-vivid-800: #0B69A3;
+$light-blue-vivid-700: #127FBF;
+$light-blue-vivid-600: #1992D4;
+$light-blue-vivid-500: #2BB0ED;
+$light-blue-vivid-400: #40C3F7;
+$light-blue-vivid-300: #5ED0FA;
+$light-blue-vivid-200: #81DEFD;
+$light-blue-vivid-100: #B3ECFF;
+$light-blue-vivid-000: #E3F8FF;
+
+// Red (Vivid)
+$red-vivid-900: #610316;
+$red-vivid-800: #8A041A;
+$red-vivid-700: #AB091E;
+$red-vivid-600: #CF1124;
+$red-vivid-500: #E12D39;
+$red-vivid-400: #EF4E4E;
+$red-vivid-300: #F86A6A;
+$red-vivid-200: #FF9B9B;
+$red-vivid-100: #FFBDBD;
+$red-vivid-000: #FFE3E3;
+
+// Yellow (Vivid)
+$yellow-vivid-900: #8D2B0B;
+$yellow-vivid-800: #B44D12;
+$yellow-vivid-700: #CB6E17;
+$yellow-vivid-600: #DE911D;
+$yellow-vivid-500: #F0B429;
+$yellow-vivid-400: #F7C948;
+$yellow-vivid-300: #FADB5F;
+$yellow-vivid-200: #FCE588;
+$yellow-vivid-100: #FFF3C4;
+$yellow-vivid-000: #FFFBEA;
+
+$white: #FFFFFF;
+$black: #000000;
+
+$regular-text: $cool-grey-800;
+$deemphasized-text: $cool-grey-300;
+
+// =================
+// Typography
+// =================
+$font-family-sans-serif: 'Montserrat', sans-serif;
+$font-weight-normal: 300;
+$font-weight-bold:   700;
+
+// =================
+// Components
+// =================
+
+// Body
+$body-color: $regular-text;
+$body-bg:    $cool-grey-000;
+
+// Links
+$link-decoration: none;
+$link-color: $regular-text;
+$link-hover-decoration: underline;
+
+// Borders
+$border-radius: 5px;
