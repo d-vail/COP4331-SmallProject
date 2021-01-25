@@ -1,0 +1,42 @@
+// ==================================
+// Login / Signup / Forgot Password
+// ==================================
+.login {
+  background: url($hero-pattern-topography), linear-gradient(135deg, $indigo-vivid-600 2.88%, #4E1DBF 98.14%);
+  min-height: 100vh;
+
+  .body-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(100deg, #ffffff 50%, #fff0 50%) no-repeat;
+    @include media-breakpoint-up(xl) {
+      background: linear-gradient(115deg, #ffffff 50%, #fff0 50%) 100% no-repeat;
+    }
+  }
+
+  .logo {
+    color: $cool-grey-800;
+    font-size: 24px;
+    font-weight: $font-weight-bold;
+  }
+
+  .signup {
+    color: $indigo-vivid-000;
+    font-size: 18px;
+    font-weight: $font-weight-normal;
+  }
+
+  .signin-form {
+    background-color: $white;
+    border-radius: $border-radius;
+    width: 90%;
+    @include shadow-800;
+    @include media-breakpoint-up(sm) {
+      width: 500px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: $font-weight-bold;
+    }
+  } 
+}

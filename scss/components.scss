@@ -1,0 +1,84 @@
+// =============================
+// Buttons - Override Bootstrap
+// =============================
+.btn {
+  font-size: 18px;
+  font-weight: $font-weight-bold;
+  padding: 15px 30px;
+}
+
+.btn-primary {
+  background-color: $indigo-vivid-400;
+  border-color: $indigo-vivid-400;
+  color: $indigo-vivid-000;
+}
+
+.btn-secondary-light {
+  background-color: $white;
+  border-color: $white;
+  color: $regular-text;
+  transition: transform .2s cubic-bezier(.785,.135,.15,.86) 0s;
+  
+  &:hover {
+    transform: scale(1.05)
+  }
+}
+
+.btn-secondary-dark {
+  background-color: $cool-grey-200;
+  border-color: $cool-grey-200;
+  color: $regular-text;
+}
+
+.btn-secondary-outline-400 {
+  background-color: $white;
+  border-color: $cool-grey-200;
+  border-width: 1px;
+  color: $regular-text;
+}
+
+.btn-secondary-outline-700 {
+  background-color: $white;
+  border-color: $cool-grey-200;
+  border-width: 3px;
+  color: $regular-text;
+}
+
+// =============================
+// Inputs - Override Bootstrap
+// =============================
+.input-with-icon-label {
+  label {
+    font-size: 12px;
+    font-weight: $font-weight-bold;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .input-group {
+    position: relative;
+  }
+
+  span {
+    color: $cool-grey-100;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+  }
+
+  input {
+    border: 2px solid $cool-grey-100;
+    border-radius: $border-radius;
+    color: $deemphasized-text;
+    font-size: 14px;
+    font-weight: $font-weight-bold;
+    padding: 12px 12px 12px 54px;
+
+    &::placeholder {
+      color: $deemphasized-text;
+    }
+    &:-ms-input-placeholder {
+      color: $deemphasized-text;
+    }
+  }
+}
