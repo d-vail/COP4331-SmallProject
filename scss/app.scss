@@ -1,0 +1,42 @@
+// =============
+// Application
+// =============
+.app {
+  min-height: 100vh;
+
+  .body-wrapper {
+    min-height: 100vh;
+  }
+
+  nav {
+    background: url($hero-pattern-topography) $indigo-vivid-700;
+
+    a {
+      font-size: 36px;
+      color: $indigo-vivid-000;
+    }
+  }
+
+  .empty-state {
+    img {
+      width: 80%;
+      @include media-breakpoint-up(lg) {
+        width: 60%;
+      }
+    }
+
+    p {
+      font-size: 24px;
+      width: 60%;
+      @include media-breakpoint-up(md) {
+        width: 50%;
+      }
+      @include media-breakpoint-up(lg) {
+        width: 40%;
+      }
+      @include media-breakpoint-up(xl) {
+        width: 25%;
+      }
+    }
+  }
+}
