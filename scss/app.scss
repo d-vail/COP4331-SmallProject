@@ -18,7 +18,7 @@
   }
 
   main {
-    position:relative;
+    position: relative;
   }
 
   .empty-state {
@@ -54,16 +54,71 @@
       font-size: 36px;
       color: $indigo-vivid-400;
     }
+
+    .contact {
+      max-height: 56px;
+      @include truncate;
+    }
   }
 
   .contact-details {
+    background-color: $cool-grey-000;
     display: none;
     min-height: 100%;
     position: absolute;
     width: 100%;
+    z-index: 3;
     @include media-breakpoint-up(lg) {
+      display: block;
       position: relative;
       width: 70%;
+    }
+
+    .contact-details-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      @include media-breakpoint-up(xl) {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @include media-breakpoint-up(xl) {
+          flex-direction: row;
+        }
+
+        img {
+          width: 150px;
+          @include media-breakpoint-up(xxl) {
+            width: 200px;
+          }
+          @include inner-shadow;
+        }
+      }
+
+      .contact-actions {
+        .btn {
+          width: 120px;
+        }
+      }
+    }
+
+    .card {
+      &.contact {
+        border-color: $light-blue-vivid-500;
+      }
+
+      &.address {
+        border-color: $red-vivid-500;
+      }
+
+      &.notes {
+        border-color: $yellow-vivid-500;
+      }
     }
   }
 }

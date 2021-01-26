@@ -18,12 +18,21 @@
   font-size: 18px;
   font-weight: $font-weight-bold;
   padding: 15px 30px;
+  color: $deemphasized-text;
+
+  &:hover {
+    color: $regular-text;
+  }
 }
 
 .btn-primary {
   background-color: $indigo-vivid-400;
   border-color: $indigo-vivid-400;
   color: $indigo-vivid-000;
+
+  &:hover {
+    color: $white;
+  }
 }
 
 .btn-secondary-light {
@@ -48,6 +57,12 @@
   border-color: $cool-grey-200;
   border-width: 1px;
   color: $regular-text;
+
+  &:hover {
+    background-color: $indigo-vivid-400;
+    border-color: $indigo-vivid-400;
+    color: $white;
+  }
 }
 
 .btn-secondary-outline-700 {
@@ -55,6 +70,12 @@
   border-color: $cool-grey-200;
   border-width: 3px;
   color: $regular-text;
+
+  &:hover {
+    background-color: $indigo-vivid-400;
+    border-color: $indigo-vivid-400;
+    color: $white;
+  }
 }
 
 // =============================
@@ -137,5 +158,26 @@
     &.active .page-link {
       font-weight: $font-weight-bold;
     }
+  }
+}
+
+// =============================
+// Cards
+// =============================
+.card {
+  background-color: $white;
+  border-radius: $border-radius;
+  border-top: 4px solid $indigo-vivid-400;
+  font-size: 20px;
+  margin: 0 0 25px 0;
+  padding: 25px 40px;
+  @include shadow-400;
+
+  .card-header {
+    color: $regular-text;
+    font-size: 20px;
+    font-weight: $font-weight-bold;
+    margin: 0 0 25px 0;
+    padding: 0; 
   }
 }

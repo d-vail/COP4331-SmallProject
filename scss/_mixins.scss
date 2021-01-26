@@ -32,3 +32,16 @@
 @mixin shadow-800 {
   box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
 }
+
+@mixin inner-shadow {
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+// =================
+// Text Truncation
+// =================
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
