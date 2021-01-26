@@ -1,4 +1,17 @@
 // =============================
+// Headers
+// =============================
+.primary-header {
+  font-size: 36px;
+  font-weight: $font-weight-bold;
+}
+
+.secondary-header {
+  font-size: 20px;
+  font-weight: $font-weight-bold;
+}
+
+// =============================
 // Buttons - Override Bootstrap
 // =============================
 .btn {
@@ -45,7 +58,7 @@
 }
 
 // =============================
-// Inputs - Override Bootstrap
+// Inputs
 // =============================
 .input-with-icon-label {
   label {
@@ -79,6 +92,50 @@
     }
     &:-ms-input-placeholder {
       color: $deemphasized-text;
+    }
+  }
+}
+
+// =================================
+// List Groups - Override Bootstrap
+// =================================
+.list-group-item {
+  border: none;
+  border-radius: $border-radius;
+  @include shadow-500;
+
+  img {
+    width: 40px;
+  }
+
+  h4 {
+    font-size: 16px;
+    font-weight: $font-weight-bold;;
+    margin: 0;
+    padding: 0;
+  }
+
+  &.active {
+    background-color: $cool-grey-200;
+    color: $regular-text;
+  }
+}
+
+// =================================
+// Pagination - Override Bootstrap
+// =================================
+.pagination {
+  .page-links {
+    list-style-type: none;
+  }
+
+  .page-item {
+    .page-link {
+      border-radius: $pagination-border-radius;
+    }
+
+    &.active .page-link {
+      font-weight: $font-weight-bold;
     }
   }
 }

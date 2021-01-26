@@ -33,10 +33,5 @@
     @include media-breakpoint-up(sm) {
       width: 500px;
     }
-
-    h1 {
-      font-size: 36px;
-      font-weight: $font-weight-bold;
-    }
   } 
 }

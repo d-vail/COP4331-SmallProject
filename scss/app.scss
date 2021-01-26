@@ -8,13 +8,17 @@
     min-height: 100vh;
   }
 
-  nav {
+  .menubar {
     background: url($hero-pattern-topography) $indigo-vivid-700;
 
     a {
       font-size: 36px;
       color: $indigo-vivid-000;
     }
+  }
+
+  main {
+    position:relative;
   }
 
   .empty-state {
@@ -37,6 +41,29 @@
       @include media-breakpoint-up(xl) {
         width: 25%;
       }
+    }
+  }
+
+  .contact-list {
+    width: 100%;
+    @include media-breakpoint-up(lg) {
+      width: 30%;
+    }
+
+    .add-contact-btn {
+      font-size: 36px;
+      color: $indigo-vivid-400;
+    }
+  }
+
+  .contact-details {
+    display: none;
+    min-height: 100%;
+    position: absolute;
+    width: 100%;
+    @include media-breakpoint-up(lg) {
+      position: relative;
+      width: 70%;
     }
   }
 }

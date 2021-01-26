@@ -63,8 +63,9 @@ $yellow-vivid-200: #FCE588;
 $yellow-vivid-100: #FFF3C4;
 $yellow-vivid-000: #FFFBEA;
 
-$white: #FFFFFF;
-$black: #000000;
+$white:       #FFFFFF;
+$black:       #000000;
+$transparent: #FFFFFF00;
 
 $regular-text: $cool-grey-800;
 $deemphasized-text: $cool-grey-300;
@@ -91,3 +92,17 @@ $link-hover-decoration: underline;
 
 // Borders
 $border-radius: 5px;
+
+// Pagination
+$pagination-color:                  $regular-text;
+$pagination-bg:                     $transparent;
+$pagination-border-width:           0;
+$pagination-border-radius:          $border-radius;
+$pagination-focus-color:            $white;
+$pagination-focus-bg:               $indigo-vivid-400;
+$pagination-hover-color:            $white;
+$pagination-hover-bg:               $indigo-vivid-400;
+$pagination-active-color:           $regular-text;
+$pagination-active-bg:              $cool-grey-300;
+$pagination-disabled-color:         $deemphasized-text;
+$pagination-disabled-bg:            $transparent;
