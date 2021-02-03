@@ -1,10 +1,10 @@
 <?php
 class DBConnection{
 // edit these fields if needed
-private $servername = "";
+private $servername = "localhost";
 private $username = "root";
-private $password = "";
-private $db = "";
+private $password = "Group23-Cop4331C";
+private $db = "COP4331";
 private $con;
 
     public function __construct(){
