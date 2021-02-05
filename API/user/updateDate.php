@@ -1,5 +1,5 @@
 <?php
-    # Upon a successful log in, call this script to update the date of last logged in
+    # Upon a successful log out, call this script to update the date of last logged in
     include("../class/DBConnection.php");
 
     $inData = getRequestInfo();
@@ -29,13 +29,6 @@
 	{
 		return json_decode(file_get_contents('php://input'), true);
     }
-
-    function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
-    }
-    
     function returnWithError( $err )
 	{
 		$retValue = '{"error":"' . $err . '"}';

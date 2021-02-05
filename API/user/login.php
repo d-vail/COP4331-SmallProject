@@ -9,7 +9,7 @@
     $password = $inData["password"];
     try
     {
-        $sql = "SELECT ID, firstName, lastName
+        $sql = "SELECT *
                 FROM Users
                 WHERE username = :username
                 AND password = :password";
@@ -44,7 +44,7 @@
         
     function returnWithError($err)
     {
-        $retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+        $retValue = '{"error":"' . $err . '"}';
         sendResultInfoAsJson( $retValue );
     }
 
