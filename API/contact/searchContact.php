@@ -1,10 +1,10 @@
 <?php
     include("../class/DBConnection.php");
     
-    $inData = getRequestInfo();
+    //$inData = getRequestInfo();
     
-    $username = $inData["Username"];
-    $name = $inData["name"];
+    $username = $_GET["Username"];
+    $name = $_GET["name"];
     
     $db = new DBConnection();
     $db = $db->getConnection();
@@ -13,9 +13,10 @@
     {
         $sql = "SELECT *
                 FROM Contacts
-                WHERE Username = :username AND CONCAT(FirstName, ' ',LastName) LIKE %$name%";
-        $stmt = $this->db->prepare($sql);
+                WHERE Username = :username AND CONCAT(FirstName, ' ',LastName) LIKE CONCAT('%', :name, '%')";
+        $stmt = $db->prepare($sql);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR, 255);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR, 255);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 

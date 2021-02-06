@@ -13,7 +13,7 @@
                 FROM Users
                 WHERE Username = :username
                 AND password = :password";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $db->prepare($sql);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR, 255);
         $stmt->bindParam(':password', $password, PDO::PARAM_STR, 255);
         $stmt->execute();

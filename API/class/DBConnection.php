@@ -2,8 +2,8 @@
 class DBConnection{
 // edit these fields if needed
 private $servername = "localhost";
-private $username = "root";
-private $password = "Group23-Cop4331C";
+private $username = "admin";
+private $password = "Group23-Cop4331";
 private $db = "COP4331";
 private $con;
 
