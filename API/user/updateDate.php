@@ -7,12 +7,12 @@
     $db = new DBConnection();
     $db = $db->getConnection();
 
-    $username = $inData["username"];
+    $username = $inData["Username"];
 
     try{
         $sql = "UPDATE Users
                 SET DateLastLoggedIn = now()
-                WHERE username = :username";
+                WHERE Username = :username";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR, 255);
         $stmt->execute();

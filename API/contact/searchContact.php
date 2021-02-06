@@ -3,7 +3,7 @@
     
     $inData = getRequestInfo();
     
-    $username = $inData["username"];
+    $username = $inData["Username"];
     $name = $inData["name"];
     
     $db = new DBConnection();
@@ -13,7 +13,7 @@
     {
         $sql = "SELECT *
                 FROM Contacts
-                WHERE username = :username AND CONCAT(FirstName, ' ',LastName) LIKE %$name%";
+                WHERE Username = :username AND CONCAT(FirstName, ' ',LastName) LIKE %$name%";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR, 255);
         $stmt->execute();

@@ -5,13 +5,13 @@
     $db = new DBConnection();
     $db = $db->getConnection();
 
-    $username = $inData["username"];
-    $password = $inData["password"];
+    $username = $inData["Username"];
+    $password = $inData["Password"];
     try
     {
         $sql = "SELECT *
                 FROM Users
-                WHERE username = :username
+                WHERE Username = :username
                 AND password = :password";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':username', $username, PDO::PARAM_STR, 255);
@@ -23,12 +23,13 @@
     {
         die("Error occurred while executing query.");
     }
-    if(!(empty($result))){
+    if(!(empty($result)))
+    {
         $result = json_encode($result);
         sendResultInfoAsJson($result);
     }
-    else{
-
+    else
+    {
         returnWithError("Failed to login. Please enter your username and password again.");
     }
     function getRequestInfo()
