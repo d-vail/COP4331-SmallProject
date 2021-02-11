@@ -1,23 +1,24 @@
 <?php
-class DBConnection{
+class DBConnection
+{
 // edit these fields if needed
-private $servername = "localhost";
-private $username = "admin";
-private $password = "Group23-Cop4331";
-private $db = "COP4331";
-private $con;
+    private $servername = "localhost";
+    private $username = "admin";
+    private $password = "Group23-Cop4331";
+    private $db = "COP4331";
+    private $con;
 
-    public function __construct(){
-        try{
+    public function __construct()
+    {
+        try {
             $this->con = new PDO("mysql:host=$this->servername;dbname=$this->db", $this->username, $this->password);
             $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        }
-        catch(PDOException $e){
+        } catch (PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
         }
     }
-    public function getConnection(){
+    public function getConnection()
+    {
         return $this->con;
     }
 }
-?>
