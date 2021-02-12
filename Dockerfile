@@ -1,2 +1,2 @@
-FROM httpd:2.4
-COPY ./frontend/ /usr/local/apache2/htdocs/
+FROM php:7.4-apache-buster
+RUN docker-php-ext-install mysqli pdo pdo_mysql json
