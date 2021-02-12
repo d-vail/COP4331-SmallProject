@@ -2,10 +2,10 @@
  * Make an HTTP GET request to the given url.
  * @async
  * @param {string} url - The url to send request to.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function get(url) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'GET',
     mode: 'cors',
     credentials: 'omit',
@@ -13,8 +13,6 @@ export async function get(url) {
       'Content-Type': 'application/json',
     },
   });
-
-  return response.json();
 }
 
 /**
@@ -22,10 +20,10 @@ export async function get(url) {
  * @async
  * @param {string} url - The url to send request to.
  * @param {string} token - Bearer token.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function getAuth(url, token) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'GET',
     mode: 'cors',
     credentials: 'include',
@@ -34,8 +32,6 @@ export async function getAuth(url, token) {
       'Authorization': `Bearer ${token}`,
     },
   });
-
-  return response.json();
 }
 
 /**
@@ -43,10 +39,10 @@ export async function getAuth(url, token) {
  * @async
  * @param {string} url - The url to send request to.
  * @param {Object} data - The data to be sent.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function post(url, data) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'POST',
     mode: 'cors',
     credentials: 'omit',
@@ -56,8 +52,6 @@ export async function post(url, data) {
     },
     body: JSON.stringify(data),
   });
-
-  return response.json();
 }
 
 /**
@@ -66,10 +60,10 @@ export async function post(url, data) {
  * @param {string} url - The url to send request to.
  * @param {string} token - Bearer token.
  * @param {Object} data - The data to be sent.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function postAuth(url, token, data) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'POST',
     mode: 'cors',
     credentials: 'include',
@@ -80,8 +74,6 @@ export async function postAuth(url, token, data) {
     },
     body: JSON.stringify(data),
   });
-
-  return response.json();
 }
 
 /**
@@ -89,10 +81,10 @@ export async function postAuth(url, token, data) {
  * @async
  * @param {string} url - The url to send request to.
  * @param {Object} data - The data to be sent.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function put(url, data) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'PUT',
     mode: 'cors',
     credentials: 'omit',
@@ -102,8 +94,6 @@ export async function put(url, data) {
     },
     body: JSON.stringify(data),
   });
-
-  return response.json();
 }
 
 /**
@@ -112,10 +102,10 @@ export async function put(url, data) {
  * @param {string} url - The url to send request to.
  * @param {string} token - Bearer token.
  * @param {Object} data - The data to be sent.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function putAuth(url, token, data) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'PUT',
     mode: 'cors',
     credentials: 'include',
@@ -126,18 +116,16 @@ export async function putAuth(url, token, data) {
     },
     body: JSON.stringify(data),
   });
-
-  return response.json();
 }
 
 /**
  * Make an HTTP DELETE request to the given url.
  * @async
  * @param {string} url - The url to send request to.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function del(url) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'DELETE',
     mode: 'cors',
     credentials: 'omit',
@@ -145,8 +133,6 @@ export async function del(url) {
       'Content-Type': 'application/json',
     },
   });
-
-  return response.json();
 }
 
 /**
@@ -154,10 +140,10 @@ export async function del(url) {
  * @async
  * @param {string} url - The url to send request to.
  * @param {string} token - Bearer token.
- * @returns {Object} Response as JSON
+ * @returns {Promise} A Promise that resolves to a Response object.
  */
 export async function delAuth(url, token) {
-  const response = await fetch(url, {
+  return fetch(url, {
     method: 'DELETE',
     mode: 'cors',
     credentials: 'include',
@@ -166,6 +152,4 @@ export async function delAuth(url, token) {
       'Authorization': `Bearer ${token}`,
     },
   });
-
-  return response.json();
 }
