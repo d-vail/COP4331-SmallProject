@@ -4,7 +4,7 @@
   "description": "COP4331 Spring 2021, Group 23, Small Project",
   "main": "index.html",
   "scripts": {
-    "sass-watch": "sass --watch scss/styles.scss:css/styles.css"
+    "sass-watch": "sass --watch src/scss/styles.scss:src/css/styles.css"
   },
   "repository": {
     "type": "git",
