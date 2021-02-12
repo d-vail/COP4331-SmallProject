@@ -1,64 +1,80 @@
 <?php
-    include("../class/DBConnection.php");
 
-    $inData = getRequestInfo();
+require "../class/DBConnection.php";
+require "../class/Response.php";
+require "../class/Auth.php";
 
-    $db = new DBConnection();
-    $db = $db->getConnection();
+$inData = getRequestInfo();
+$db = new DBConnection();
+$db = $db->getConnection();
 
-    $username = $inData["Username"];
-    $password = $inData["Password"];
-    $firstName = $inData["FirstName"];
-    $lastName = $inData["LastName"];
-    $email = $inData["Email"];
+$username = $inData["Username"];
+$password = $inData["Password"] == null ? null : password_hash($inData["Password"], PASSWORD_DEFAULT);
+$email = $inData["Email"];
 
-    try{
-		// Change users to match the name of your table.
-       
-	    // Sets the INSERT sql statament.
-		// ID is automatically assigned, if auto increment is selected.
-		// DateFirstOn gets current date.
-		$sql = "INSERT INTO `Users`(FirstName, LastName, Username, Password, Email, DateCreated)
-        VALUES(?,?,?,?,?,now())";
-		
-		// Prepares the format of the query using the sql statment.
-        $stmt = $db->prepare($sql);
-		
-		// Binds each variable to the query.
-		$stmt->bindParam(1, $firstName, PDO::PARAM_STR, 255);
-		$stmt->bindParam(2, $lastName, PDO::PARAM_STR, 255);
-        $stmt->bindParam(3, $username, PDO::PARAM_STR, 255);
-        $stmt->bindParam(4, $password, PDO::PARAM_STR, 255);
-		$stmt->bindParam(5, $email, PDO::PARAM_STR, 255);
-		// Executes the query.
-        $stmt->execute();
-		
-		// Counts the number of rows after insertion.
-        $result = $stmt->rowCount();
+try {
+    // Change users to match the name of your table.
+
+    // Sets the INSERT sql statament.
+    // ID is automatically assigned, if auto increment is selected.
+    // DateFirstOn gets current date.
+    $sql = "INSERT INTO `Users`(Username, Password, Email, DateCreated) VALUES(?,?,?,now())";
+
+    // Prepares the format of the query using the sql statment.
+    $stmt = $db->prepare($sql);
+
+    // Binds each variable to the query.
+    $stmt->bindParam(1, $username, PDO::PARAM_STR, 255);
+    $stmt->bindParam(2, $password, PDO::PARAM_STR, 255);
+    $stmt->bindParam(3, $email, PDO::PARAM_STR, 255);
+
+    // Executes the query.
+    if ($stmt->execute()) {
+        Response::send(200, [
+            "Username" => $username,
+            "JWT" => Auth::getJWT([
+                "Username" => $username,
+            ]),
+        ]);
+    } else {
+        Response::send(500, [
+            "Error" => "Failed to create an account.",
+        ]);
     }
-    catch(Exception $e){
-		
-		// Chenged it, so that it tells you the exact exception.
-        throw $e;
-    }
-    if($result == 0){
-        returnWithError("Failed to create an account.");
-    }
+} catch (Exception $e) {
+    $mysqlError = $e->errorInfo[1];
+    $mysqlErrorMsg = $e->errorInfo[2];
 
-    function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
-    }
+    switch ($mysqlError) {
+        case 1062:
+            // Unique constraint violated.
+            $matches = [];
+            preg_match('/(.+)\'(.+)\'.+\'(.+)\.(.+)\'/', $mysqlErrorMsg, $matches);
 
-    function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
+            Response::send(409, [
+                "Error" => $matches[4] . " is already taken.",
+            ]);
+
+            break;
+        case 1048:
+            // Required value missing.
+            $matches = [];
+            preg_match('/.+\'(.+)\'.+/', $mysqlErrorMsg, $matches);
+
+            Response::send(400, [
+                "Error" => $matches[1] . " is required.",
+            ]);
+
+            break;
+        default:
+            Response::send(500, [
+                "Error" => "Failed to create an account.",
+            ]);
+            break;
     }
-    
-    function returnWithError( $err )
-	{
-		$retValue = '{"error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
-?>
+}
+
+function getRequestInfo()
+{
+    return json_decode(file_get_contents('php://input'), true);
+}
