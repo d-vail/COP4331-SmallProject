@@ -1,50 +1,40 @@
 <?php
-    include("../class/DBConnection.php");
 
-    $inData = getRequestInfo();
+require "../class/DBConnection.php";
+require "../class/Response.php";
+require "../class/Auth.php";
 
+Auth::authenticate($_GET["Username"], 'deleteContact');
+
+function deleteContact() {
     $db = new DBConnection();
     $db = $db->getConnection();
 
     //username that is creating a contact must be added so we can track finding a contact
-    $username = $inData["Username"];
-    $ID = $inData["ID"];
+    $username = $_GET["Username"];
+    $ID = $_GET["ContactID"];
 
-    try{
-		
-		// ID is automatically assigned if Auto Increse is set on the DB.
-		// username is a foreign key from the users table. This way you can only insert a contact to an user that exists.
-        $sql = "DELETE FROM contacts WHERE contacts.ID = $ID AND contacts.Username = '$username'";
-							  
+    try {
+        // ID is automatically assigned if Auto Increse is set on the DB.
+        // username is a foreign key from the users table. This way you can only insert a contact to an user that exists.
+        $sql = "DELETE FROM Contacts WHERE Contacts.ID = $ID AND Contacts.Username = '$username'";
+
         $stmt = $db->prepare($sql);
-		
+
         $stmt->execute();
-        $result = $stmt->rowCount();
-    }
-    catch(Exception $e){
-        // Chenged it, so that it tells you the exact exception.
-        throw $e;
-    }
-    
-	// Check if there were any items deleted.
-    if($result == 0){
-        returnWithError("Failed to delete a contact.");
-    }
-    
-    function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
+        $rowCount = $stmt->rowCount();
+    } catch (Exception $e) {
+        Response::send(500, [
+            "Error" => "Could not delete contact. Please try again.",
+        ]);
     }
 
-    function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
+    // Check if there were any items deleted.
+    if ($rowCount == 0) {
+        Response::send(404, [
+            "Error" => "Contact id " . $ID . " does not exist for user " . $username . ".",
+        ]);
+    } else {
+        Response::send(204, false);
     }
-    
-    function returnWithError( $err )
-	{
-		$retValue = '{"error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
-?>
+}

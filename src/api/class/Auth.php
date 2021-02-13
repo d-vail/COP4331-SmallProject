@@ -1,5 +1,7 @@
 <?php
+
 require "../../vendor/autoload.php";
+
 use \Firebase\JWT\JWT;
 
 class Auth
@@ -11,11 +13,11 @@ class Auth
      * @return string A signed JWT
      */
     public static function getJWT($payload)
-    {   
+    {
         $date_issued = time();
         $token = [
-            "iat"     => $date_issued,
-            "exp"     => $date_issued + (getenv('AUTH_EXPIRATION') * 60),
+            "iat" => $date_issued,
+            "exp" => $date_issued + (getenv('AUTH_EXPIRATION') * 60),
             "payload" => $payload,
         ];
 
@@ -26,10 +28,10 @@ class Auth
 
     /**
      * Decodes a JWT string.
-     * 
+     *
      * @param string $jwt       The JWT
      * @return array|boolean    The JWT's payload as an associative array or false if the JWT was
-     *                          invalid.
+     *                          invalid
      */
     public static function decodeJWT($jwt)
     {
@@ -38,6 +40,39 @@ class Auth
             return (array) $decoded;
         } catch (Exception $e) {
             return false;
+        }
+    }
+
+    /**
+     * Authenticate the user before allowing the given action to be performed.
+     * 
+     * @param string   $user    The username of the user who wants access to the endpoint
+     * @param function $action  The function to be executed if user is authorized
+     */
+    public static function authenticate($user, $action)
+    {
+        $headers = apache_request_headers();
+
+        if (isset($headers['Authorization'])) {
+            $authHeader = explode(" ", $headers['Authorization']);
+            $jwt = count($authHeader) < 2 ? $authHeader[0] : $authHeader[1];
+            $jwtPayload = Auth::decodeJWT($jwt);
+
+            if (!$jwtPayload) {
+                Response::send(401, [
+                    "Error" => "This request requires user authentication.",
+                ]);
+            } elseif ($jwtPayload['payload']->Username != $user) {
+                Response::send(403, [
+                    "Error" => "This user is not authorized to perform this operation.",
+                ]);
+            } else {
+                $action();
+            }
+        } else {
+            Response::send(401, [
+                "Error" => "This request requires user authentication.",
+            ]);
         }
     }
 }
