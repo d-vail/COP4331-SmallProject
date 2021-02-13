@@ -15,6 +15,26 @@
       font-size: 36px;
       color: $indigo-vivid-000;
     }
+
+    form {
+      max-width: 500px; 
+      width: 75%;
+      @include media-breakpoint-up(md) {
+        width: 50%;
+      }
+
+      #search-contacts {
+        padding-right: 8rem;
+      }
+
+      #search-button {
+        height: 38px;
+        padding: 5px 20px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+      }
+    }
   }
 
   main {

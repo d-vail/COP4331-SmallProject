@@ -7177,6 +7177,25 @@ progress {
   font-size: 36px;
   color: #D9E8FF;
 }
+.app .menubar form {
+  max-width: 500px;
+  width: 75%;
+}
+@media (min-width: 768px) {
+  .app .menubar form {
+    width: 50%;
+  }
+}
+.app .menubar form #search-contacts {
+  padding-right: 8rem;
+}
+.app .menubar form #search-button {
+  height: 38px;
+  padding: 5px 20px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
 .app main {
   position: relative;
 }
