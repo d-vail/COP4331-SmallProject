@@ -1,4 +1,5 @@
 import { signin, signup, logout } from './modules/auth.js';
+import { loadAppState, searchContacts } from './modules/getters.js';
 
 const page = document.querySelector('body').id;
 
@@ -8,7 +9,6 @@ if (page == 'app') initApp();
 
 /**
  * Setup event handlers for the sign up/index page.
- * @todo If already signed in, redirect to app home.
  */
 function initSignin() {
   const signinForm = document.querySelector('.signup-signin-form form');
@@ -17,7 +17,6 @@ function initSignin() {
 
 /**
  * Setup event handlers for the sign up page.
- * @todo If already signed in, redirect to app home.
  */
 function initSignup() {
   const signupForm = document.querySelector('.signup-signin-form form');
@@ -26,9 +25,13 @@ function initSignup() {
 
 /**
  * Setup event handlers for the app home page.
- * @todo If not signed in, redirect to sign in.
  */
 function initApp() {
   const logoutBtn = document.querySelector('#logout');
+  const search = document.querySelector('#search');
+
   logoutBtn.addEventListener('click', logout);
+  search.addEventListener('submit', searchContacts);
+
+  loadAppState();
 }

@@ -1,7 +1,11 @@
+/**
+ * Action handlers responsible for authenticating a user: signing up, signing in, logging out
+ */
+
 import { API_BASE, APP_BASE, APP_HOME } from './config.js'
-import { post, postAuth } from './httprequests.js'
-import { setCookie, getCookie, deleteCookie } from './cookies.js';
-import { alertTemplate } from './templates.js';
+import { post } from './httprequests.js'
+import { setCookie, deleteCookie } from './cookies.js';
+import { renderAuthorizationError } from './views.js';
 
 /**
  * Handle sign in action.
@@ -22,7 +26,7 @@ export function signin() {
       });
     })
     .catch(err => {
-      displayAuthError('Could not verify username and password. Please try again.');
+      renderAuthorizationError('.signup-signin-form form', 'Could not verify username and password. Please try again.');
     });
 }
 
@@ -46,7 +50,7 @@ export function signup() {
       });
     })
     .catch(err => {
-      displayAuthError('Account could not be created. Please try again.');
+      renderAuthorizationError('.signup-signin-form form', 'Account could not be created. Please try again.');
     });
 }
 
@@ -59,9 +63,9 @@ export function logout() {
   window.location.replace(APP_BASE);
 }
 
-// ---------
-// Helpers
-// ---------
+// =================
+// Internal Helpers
+// =================
 
 /**
  * Maps actions to response from signin or signup request.
@@ -73,9 +77,10 @@ export function logout() {
 function handleResponse(response) {
   if (response.ok) {
     setCookie('jwt', response.body.JWT, 1);
+    setCookie('username', response.body.Username, 1);
     window.location.replace(`${APP_BASE}${APP_HOME}`);
   } else {
-    displayAuthError(response.body.Error);
+    renderAuthorizationError('.signup-signin-form form', response.body.Error);
   }
 }
 
@@ -96,18 +101,4 @@ function getValue(selector) {
  */
 function valueExists(element) {
   return !(element === null || element.value === undefined ||  element.value == '');
-}
-
-/**
- * Attaches an error alert to the signup/signin form with the given message.
- * @param {string} message - The message to include in the alert.
- */
-function displayAuthError(message) {
-  const form = document.querySelector('.signup-signin-form form'); 
-  const alerts = document.querySelectorAll('.signup-signin-form form .alert');
-
-  for (let i = 0; i < alerts.length; i++)
-    form.removeChild(alerts[i]);
-
-  form.appendChild(alertTemplate(message));
 }
