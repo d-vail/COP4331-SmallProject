@@ -92,23 +92,33 @@ function updateContact()
 
         $stmt_UpdateContact->execute();
         $updatedRowCount = $stmt_UpdateContact->rowCount();
+
+        // Check if there were any items were modified.
+        if ($extractedRowCount == 0) {
+            Response::send(404, [
+                "Error" => "Contact id " . $ID . " does not exist for user " . $received_Username . ".",
+            ]);
+        } else {
+            Response::send(200, [
+                "ID" => $ID,
+                "Username" => $received_Username,
+                "FirstName" => $received_FirstName,
+                "LastName" => $received_LastName,
+                "Email" => $received_Email,
+                "Phone" => $received_Phone,
+                "Address" => $received_Address,
+                "City" => $received_City,
+                "State" => $received_State,
+                "ZipCode" => $received_ZipCode,
+                "Notes" => $received_Notes,
+            ]);
+        }
+
     } catch (Exception $e) {
         Response::send(500, [
             "Error" => "Failed to update contact.",
         ]);
     }
-
-    // Check if there were any items were modified.
-    if ($extractedRowCount == 0) {
-        Response::send(404, [
-            "Error" => "Contact id " . $ID . " does not exist for user " . $received_Username . ".",
-        ]);
-    } else {
-        Response::send(200, [
-            "Message" => "Contact id " . $ID . " updated.",
-        ]);
-    }
-
 }
 
 function getRequestInfo()

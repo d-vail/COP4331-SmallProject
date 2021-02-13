@@ -40,12 +40,23 @@ function createContact()
         $stmt->bindParam(':State', $state, PDO::PARAM_STR, 255);
         $stmt->bindParam(':ZipCode', $zipcode, PDO::PARAM_STR, 255);
         $stmt->bindParam(':Notes', $notes, PDO::PARAM_STR, 255);
-        $stmt->bindParam(':ImageURL', $notes, PDO::PARAM_STR, 255);
+        $stmt->bindParam(':ImageURL', $imageUrl, PDO::PARAM_STR, 255);
 
         // Executes the query.
         if ($stmt->execute()) {
             Response::send(200, [
-                "Message" => $firstName . " " . $lastName . " added as a new contact.",
+                "ID" => $db->lastInsertId(),
+                "Username" => $username,
+                "FirstName" => $firstName,
+                "LastName" => $lastName,
+                "Email" => $emailaddress,
+                "Phone" => $phoneNum,
+                "Address" => $streetAddress,
+                "City" => $city,
+                "State" => $state,
+                "ZipCode" => $zipcode,
+                "Notes" => $notes,
+                "ImageURL" => $imageUrl,
             ]);
         } else {
             Response::send(500, [

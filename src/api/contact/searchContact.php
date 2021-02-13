@@ -1,11 +1,15 @@
 <?php
-    include("../class/DBConnection.php");
-    
-    //$inData = getRequestInfo();
-    
+require "../class/DBConnection.php";
+require "../class/Response.php";
+require "../class/Auth.php";
+
+Auth::authenticate($_GET["Username"], 'searchContacts');
+
+function searchContacts()
+{
     $username = $_GET["Username"];
-    $name = $_GET["name"];
-    
+    $name = $_GET["Name"];
+
     $db = new DBConnection();
     $db = $db->getConnection();
 
@@ -18,36 +22,22 @@
         $stmt->bindParam(':username', $username, PDO::PARAM_STR, 255);
         $stmt->bindParam(':name', $name, PDO::PARAM_STR, 255);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rowCount = $stmt->rowCount();
 
-    }
-    catch(Exception $e)
-    {
-        throw $e;
-    }
-
-    if(!(empty($result)))
-    {
-        $result = json_encode($result);
-        sendResultInfoAsJson($result);
-    }
-    else
-    {
-        returnWithError("No results found.");
-    }
-    function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
+    } catch (Exception $e) {
+        Response::send(500, [
+            "Error" => "Could not fetch contact details. Please try again.",
+        ]);
     }
 
-    function sendResultInfoAsJson( $obj )
-	{
-		header('Content-type: application/json');
-		echo $obj;
+    if ($rowCount == 0) {
+        Response::send(200, [
+            "results" => [],
+        ]);
+    } else {
+        Response::send(200, [
+            "results" => $result,
+        ]);
     }
-    function returnWithError( $err )
-	{
-		$retValue = '{"error":"' . $err . '"}';
-		sendResultInfoAsJson( $retValue );
-	}
-?>
+}
