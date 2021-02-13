@@ -16,12 +16,12 @@
       <nav class="menubar navbar">
         <div class="container-fluid mx-2">
           <img src="images/contag-logo-alt.svg" alt="Contag Logo" width="40" height="40" class="d-inline-block align-top me-2">
-          <form>
+          <form id="search">
             <div class="input-with-icon-label">
               <div class="input-group d-flex">
                 <span class="input-group-icon"><i class="fas fa-search fa-lg"></i></span>
                 <input class="input-group-form-control w-100" id="search-contacts" type="text" placeholder="Search">
-                <button class="btn btn-primary" type="button" id="search-button">Search</button>
+                <button class="btn btn-primary" type="submit" id="search-button">Search</button>
               </div>
             </div>
           </form>
@@ -47,13 +47,13 @@
                   <div class="form-row">
                     <div class="input-with-label w-100 mb-3">
                       <label for="contact-first-name">First Name</label>
-                      <input id="contact-first-name" type="text" value="">
+                      <input id="contact-first-name" type="text" value="" required>
                     </div>
                   </div>
                   <div class="form-row">
                     <div class="input-with-label w-100 mb-3">
                       <label for="contact-last-name">Last Name</label>
-                      <input id="contact-last-name" type="text" value="">
+                      <input id="contact-last-name" type="text" value="" required>
                     </div>
                   </div>
                 </div>
@@ -74,11 +74,11 @@
               <div class="form-row">
                 <div class="input-with-label w-50 me-4 mb-3">
                   <label for="contact-email">Email Address</label>
-                  <input id="contact-email" type="email" value="">
+                  <input id="contact-email" type="email" value="" required>
                 </div>
                 <div class="input-with-label w-50 mb-3">
                   <label for="contact-phone">Phone Number</label>
-                  <input id="contact-phone" type="tel" value="">
+                  <input id="contact-phone" type="tel" value="" required>
                 </div>
               </div>
               <div class="form-row">
