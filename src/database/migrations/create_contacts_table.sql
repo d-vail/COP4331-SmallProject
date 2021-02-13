@@ -10,6 +10,7 @@ CREATE TABLE `Contacts` (
   `State` varchar(50) DEFAULT NULL,
   `ZipCode` varchar(50) DEFAULT NULL,
   `Notes` varchar(1000) DEFAULT NULL,
+  `ImageURL` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `Username` (`Username`),
   CONSTRAINT `Contacts_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `Users` (`Username`)
