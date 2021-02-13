@@ -23,4 +23,21 @@ class Auth
 
         return $jwt;
     }
+
+    /**
+     * Decodes a JWT string.
+     * 
+     * @param string $jwt       The JWT
+     * @return array|boolean    The JWT's payload as an associative array or false if the JWT was
+     *                          invalid.
+     */
+    public static function decodeJWT($jwt)
+    {
+        try {
+            $decoded = JWT::decode($jwt, getenv('SECRET_KEY'), array('HS256'));
+            return (array) $decoded;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
