@@ -4,36 +4,14 @@ require "../class/DBConnection.php";
 require "../class/Response.php";
 require "../class/Auth.php";
 
-$headers = apache_request_headers();
 $inData = getRequestInfo();
-$username = $inData["Username"];
+Auth::authenticate($inData["Username"], 'createContact');
 
-if (isset($headers['Authorization'])) {
-    $authHeader = explode(" ", $headers['Authorization']);
-    $jwt = count($authHeader) < 2 ? $authHeader[0] : $authHeader[1];
-    $jwtPayload = Auth::decodeJWT($jwt);
-
-    if (!$jwtPayload) {
-        Response::send(401, [
-            "Error" => "This request requires user authentication.",
-        ]);
-    } elseif ($jwtPayload['payload']->Username != $username) {
-        Response::send(403, [
-            "Error" => "This user is not authorized to perform this operation.",
-        ]);
-    } else {
-        createContact($inData);
-    }
-} else {
-    Response::send(401, [
-        "Error" => "This request requires user authentication.",
-    ]);
-}
-
-function createContact($inData)
+function createContact()
 {
     $db = new DBConnection();
     $db = $db->getConnection();
+    $inData = getRequestInfo();
 
     //username that is creating a contact must be added so we can track finding a contact
     $username = $inData["Username"];
