@@ -1,0 +1,21 @@
+{
+  "name": "cop4331-smallproject",
+  "version": "1.0.0",
+  "description": "COP4331 Spring 2021, Group 23, Small Project",
+  "main": "index.html",
+  "scripts": {
+    "sass-watch": "sass --watch src/scss/styles.scss:src/css/styles.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-vail/COP4331-SmallProject.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d-vail/COP4331-SmallProject/issues"
+  },
+  "homepage": "https://github.com/d-vail/COP4331-SmallProject#readme",
+  "devDependencies": {
+    "bootstrap": "^5.0.0-beta1"
+  }
+}

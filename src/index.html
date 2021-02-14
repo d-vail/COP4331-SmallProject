@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://kit.fontawesome.com/c9e18c618f.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <title>Login | Contaq</title>
+  </head>
+  <body id="signin" class="login">
+    <div class="body-wrapper d-flex flex-column">
+      <nav class="navbar">
+        <div class="container-fluid m-2">
+          <a class="navbar-brand logo d-flex flex-row align-items-center" href="index.html" title="Contaq">
+            <img src="images/contaq-logo.svg" alt="" width="40" height="40" class="d-inline-block align-top me-2">
+            Contaq
+          </a>
+          <div class="signup-signin">
+            <span class="d-none d-lg-inline-block me-3">Don't have an account?</span>
+            <a class="btn btn-secondary-light" href="signup.html" role="button" title="Sign Up">Sign Up</a>
+          </div>
+        </div>
+      </nav>
+      <main class="d-flex flex-column align-items-center justify-content-center flex-grow-1 flex-shrink-1 mb-5">
+        <div class="signup-signin-form d-flex flex-column align-items-center mb-5">
+          <h1 class="primary-header text-center mt-5 pt-2">Sign In</h1>
+          <form class="w-75 mt-4 pt-3 mb-5 pb-2">
+            <div class="input-with-icon-label mb-3">
+              <label for="signin-username">Username</label>
+              <div class="input-group">
+                <span class="input-group-icon"><i class="fas fa-user fa-lg"></i></span>
+                <input class="input-group-form-control w-100" id="signin-username" type="text" placeholder="Enter your username" required>
+              </div>
+            </div>
+            <div class="input-with-icon-label mb-4">
+              <label for="signin-password">Password</label>
+              <div class="input-group">
+                <span class="input-group-icon"><i class="fas fa-lock fa-lg"></i></span>
+                <input class="input-group-form-control w-100" id="signin-password" type="password" placeholder="Enter your password" required>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100" type="submit">Sign In</button>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

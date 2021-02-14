@@ -1,0 +1,144 @@
+// =============
+// Application
+// =============
+.app {
+  min-height: 100vh;
+
+  .body-wrapper {
+    min-height: 100vh;
+  }
+
+  .menubar {
+    background: url($hero-pattern-topography) $indigo-vivid-700;
+
+    a {
+      font-size: 36px;
+      color: $indigo-vivid-000;
+    }
+
+    form {
+      max-width: 500px; 
+      width: 75%;
+      @include media-breakpoint-up(md) {
+        width: 50%;
+      }
+
+      #search-contacts {
+        padding-right: 8rem;
+      }
+
+      #search-button {
+        height: 38px;
+        padding: 5px 20px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+      }
+    }
+  }
+
+  main {
+    position: relative;
+  }
+
+  .empty-state {
+    img {
+      width: 80%;
+      @include media-breakpoint-up(lg) {
+        width: 60%;
+      }
+    }
+
+    p {
+      font-size: 24px;
+      width: 60%;
+      @include media-breakpoint-up(md) {
+        width: 50%;
+      }
+      @include media-breakpoint-up(lg) {
+        width: 40%;
+      }
+      @include media-breakpoint-up(xl) {
+        width: 25%;
+      }
+    }
+  }
+
+  .contact-list {
+    width: 100%;
+    @include media-breakpoint-up(lg) {
+      width: 30%;
+    }
+
+    .add-contact-btn {
+      font-size: 36px;
+      color: $indigo-vivid-400;
+    }
+
+    .contact {
+      max-height: 56px;
+      @include truncate;
+    }
+  }
+
+  .contact-details {
+    background-color: $cool-grey-000;
+    display: none;
+    min-height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+    @include media-breakpoint-up(lg) {
+      display: block;
+      position: relative;
+      width: 70%;
+    }
+
+    .contact-details-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      @include media-breakpoint-up(xl) {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @include media-breakpoint-up(xl) {
+          flex-direction: row;
+        }
+
+        img {
+          width: 150px;
+          @include media-breakpoint-up(xxl) {
+            width: 200px;
+          }
+          @include inner-shadow;
+        }
+      }
+
+      .contact-actions {
+        .btn {
+          width: 120px;
+        }
+      }
+    }
+
+    .card {
+      &.contact {
+        border-color: $light-blue-vivid-500;
+      }
+
+      &.address {
+        border-color: $red-vivid-500;
+      }
+
+      &.notes {
+        border-color: $yellow-vivid-500;
+      }
+    }
+  }
+}
