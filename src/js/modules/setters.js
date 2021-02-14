@@ -198,7 +198,10 @@ function handleCreateRequest(response) {
     window.location.replace(APP_BASE);
   }
 
-  const currentPage = document.querySelector('.page-item.active .page-link').innerHTML;
+  // If user has contacts, preserve page they are viewing after creating the contact.
+  const currentPage = document.querySelector('.page-item.active .page-link')
+    ? document.querySelector('.page-item.active .page-link').innerHTML
+    : 1;
 
   if (response.ok) {
     clearModalInputs();
