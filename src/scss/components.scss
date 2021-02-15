@@ -247,14 +247,17 @@
 
   h4 {
     font-size: 16px;
-    font-weight: $font-weight-bold;;
+    font-weight: $font-weight-bold;
     margin: 0;
     padding: 0;
   }
 
   &.active {
-    background-color: $cool-grey-200;
     color: $regular-text;
+    background-color: $white;
+    @include media-breakpoint-up(lg) {
+      background-color: $cool-grey-200;
+    }
   }
 }
 

@@ -149,6 +149,9 @@ export function contactDetailsNode(contact) {
   const notes  = hasNotes(contact.Notes) ? contactNotesSnippet(contact.Notes) : ``;
   const wrapper = document.createElement('div');
   const template = `<div class="contact-details-header mb-5">
+                      <div class="mobile-close w-100 justify-content-end">
+                        <button type="button" class="btn-close" aria-label="Close"></button>
+                      </div>
                       <div class="name">
                         <img src="${image}" class="rounded-circle" alt="${name} Preview">
                         <h2 id="contact-details-name" class="primary-header mx-4 my-3" data-firstname=${contact.FirstName} data-lastname=${contact.LastName}>${name}</h2>
