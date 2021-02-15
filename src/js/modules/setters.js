@@ -11,11 +11,11 @@ import { renderAuthorizationError, renderContactDetails } from './views.js'
 
 /**
  * Setup add modal elements, inputs and event listeners and then display.
- * @todo Add event listener to change image button.
  */
 export function setupAddModal() {
   const modalHeader = document.querySelector('#createEditContactModalLabel');
   const modalPrimaryBtn = document.querySelector('.modal-footer .btn-primary');
+  const modalImageBtn = document.querySelector('#contact-photo');
 
   // Update modal elements to indicate this action will create a new contact.
   modalHeader.innerHTML = 'Create Contact';
@@ -28,15 +28,16 @@ export function setupAddModal() {
   modalPrimaryBtn.removeEventListener('click', editContact);
   modalPrimaryBtn.removeEventListener('click', createContact);
   modalPrimaryBtn.addEventListener('click', createContact);
+  modalImageBtn.addEventListener('change', uploadImage);
 }
 
 /**
  * Setup edit modal elements, inputs and event listeners and then display.
- * @todo Add event listener to change image button.
  */
 export function setupEditModal() {
   const modalHeader = document.querySelector('#createEditContactModalLabel');
   const modalPrimaryBtn = document.querySelector('.modal-footer .btn-primary');
+  const modalImageBtn = document.querySelector('#contact-photo');
 
   // Update modal elements to indicate this action will edit an existing contact.
   modalHeader.innerHTML = 'Edit Contact';
@@ -49,6 +50,7 @@ export function setupEditModal() {
   modalPrimaryBtn.removeEventListener('click', editContact);
   modalPrimaryBtn.removeEventListener('click', createContact);
   modalPrimaryBtn.addEventListener('click', editContact);
+  modalImageBtn.addEventListener('change', uploadImage);
 }
 
 /**
@@ -75,67 +77,6 @@ export function deleteContact() {
 // =================
 // Internal Helpers
 // =================
-
-/**
- * Clear all form inputs and alerts in the edit/add modal.
- * @todo Clear image preview.
- */
-function clearModalInputs() {
-  const modalInputs = document.querySelectorAll('#createEditContactModal input');
-  const modalSelects = document.querySelectorAll('#createEditContactModal select option');
-  const modalTextAreas = document.querySelectorAll('#createEditContactModal textarea');
-  const alerts = document.querySelectorAll('#createEditContactModal .alert');
-
-  for (let i = 0; i < modalInputs.length; i++) modalInputs[i].value = '';
-  for (let i = 0; i < modalSelects.length; i++) modalSelects[i].selected = false;
-  for (let i = 0; i < modalTextAreas.length; i++) modalTextAreas[i].value = '';
-  for (let i = 0; i < alerts.length; i++) alerts[i].parentNode.removeChild(alerts[i]);  
-}
-
-/**
- * Populate edit/add modal with contact details.
- * @todo Show image preview.
- */
-function populateModalInputs() {
-  const state = getInnerText('#contact-details-state');
-
-  document.querySelector('#contact-first-name').value = getData(
-    '#contact-details-name',
-    'firstname'
-  );
-  document.querySelector('#contact-last-name').value = getData(
-    '#contact-details-name',
-    'lastname'
-  );
-  document.querySelector('#contact-email').value = getInnerText(
-    '#contact-details-email'
-  );
-  document.querySelector('#contact-phone').value = getInnerText(
-    '#contact-details-phone'
-  );
-  document.querySelector('#contact-street-address').value = getInnerText(
-    '#contact-details-street-address'
-  );
-  document.querySelector('#contact-city').value = getInnerText(
-    '#contact-details-city'
-  );
-  document.querySelector('#contact-state').value = state === null ? 'State' : state;
-  document.querySelector('#contact-zip').value = getInnerText(
-    '#contact-details-zip'
-  );
-  document.querySelector('#contact-notes').value = getInnerText(
-    '#contact-details-notes'
-  );
-}
-
-/**
- * Close edit/add modal.
- */
-function closeModal() {
-  bootstrap.Modal.getInstance(
-    document.querySelector('#createEditContactModal')
-  ).hide();
-}
 
 /**
  * Make a POST request to create a new contact.
@@ -182,6 +123,44 @@ function editContact() {
         'TODO: Display 500 error contact details state -- base off empty state'
       );
     });
+}
+
+/**
+ * Make a POST request to upload an image of the contact.
+ */
+function uploadImage() {
+  const reader = new FileReader();
+  let fileName;
+
+  reader.onload = (img) => {
+    const token = getCookie('jwt');
+    const image = {
+      Username: getCookie('username'),
+      Filename: fileName,
+      URL: img.target.result,
+    };
+
+    postAuth(`${API_BASE}/image/uploadImage.php`, token, image)
+      .then(async (resp) => {
+        handleImageUpload({
+          ok: resp.ok,
+          status: resp.status,
+          body: await resp.json(),
+        });
+      })
+      .catch((err) => {
+        renderAuthorizationError(
+          '#createEditContactModal form',
+          'Could not upload image. Please try again.'
+        );
+      });
+  };
+
+  // Don't do anything if a file was not selected.
+  if (this.files.length > 0) {
+    fileName = this.files[0].name;
+    reader.readAsDataURL(this.files[0]);
+  };
 }
 
 /**
@@ -246,6 +225,25 @@ function handleEditRequest(response) {
 }
 
 /**
+ * Maps actions to response from image upload request.
+ * @param {Object} response - Response object.
+ * @param {boolean} response.ok - A boolean indicating whether the response was successful.
+ * @param {unsigned short} response.status - The status code of the response.
+ * @param {string} response.body - The body text of the response as JSON.
+ * @todo handle errors
+ */
+function handleImageUpload(response) {
+  const contactPhoto = document.querySelector('#contact-photo');
+  const contactPhotoPreview = document.querySelector('#createEditContactModal .upload .preview');
+
+  // Save Space URL for later retrieval.
+  contactPhoto.dataset.url = response.body.SpacesURL;
+
+  // Display image in modal form.
+  contactPhotoPreview.style = `background-image: url(${response.body.SpacesURL})`;
+}
+
+/**
  * Maps actions to response from delete request.
  * @param {Object} response - Response object.
  * @param {boolean} response.ok - A boolean indicating whether the response was successful.
@@ -266,12 +264,88 @@ function handleDeleteContactResponse(response) {
 }
 
 /**
+ * Clear all form inputs and alerts in the edit/add modal.
+ */
+function clearModalInputs() {
+  const contactPhotoPreview = document.querySelector('#createEditContactModal .upload .preview');
+  const modalInputs = document.querySelectorAll('#createEditContactModal input');
+  const modalSelects = document.querySelectorAll('#createEditContactModal select option');
+  const modalTextAreas = document.querySelectorAll('#createEditContactModal textarea');
+  const alerts = document.querySelectorAll('#createEditContactModal .alert');
+
+  for (let i = 0; i < modalInputs.length; i++) modalInputs[i].value = '';
+  for (let i = 0; i < modalSelects.length; i++) modalSelects[i].selected = false;
+  for (let i = 0; i < modalTextAreas.length; i++) modalTextAreas[i].value = '';
+  for (let i = 0; i < alerts.length; i++) alerts[i].parentNode.removeChild(alerts[i]);
+
+  contactPhotoPreview.style = 'background-image: url(images/blank-profile-image.png)';
+}
+
+/**
+ * Populate edit/add modal with contact details.
+ */
+function populateModalInputs() {
+  const contactPhotoPreview = document.querySelector('#createEditContactModal .upload .preview');
+  const contactPhoto = document.querySelector('#contact-photo');
+  const contactPhotURL = document.querySelector('.contact-details-header img').src;
+  const state = getInnerText('#contact-details-state');
+
+  contactPhotoPreview.style = `background-image: url(${contactPhotURL});`;
+  contactPhoto.dataset.url = contactPhotURL;
+
+  document.querySelector('#contact-first-name').value = getData(
+    '#contact-details-name',
+    'firstname'
+  );
+
+  document.querySelector('#contact-last-name').value = getData(
+    '#contact-details-name',
+    'lastname'
+  );
+
+  document.querySelector('#contact-email').value = getInnerText(
+    '#contact-details-email'
+  );
+
+  document.querySelector('#contact-phone').value = getInnerText(
+    '#contact-details-phone'
+  );
+
+  document.querySelector('#contact-street-address').value = getInnerText(
+    '#contact-details-street-address'
+  );
+
+  document.querySelector('#contact-city').value = getInnerText(
+    '#contact-details-city'
+  );
+
+  document.querySelector('#contact-zip').value = getInnerText(
+    '#contact-details-zip'
+  );
+
+  document.querySelector('#contact-notes').value = getInnerText(
+    '#contact-details-notes'
+  );
+
+  document.querySelector('#contact-state').value = state === null ? 'State' : state;
+}
+
+/**
+ * Close edit/add modal.
+ */
+function closeModal() {
+  bootstrap.Modal.getInstance(
+    document.querySelector('#createEditContactModal')
+  ).hide();
+}
+
+/**
  * Pull contact data from create form.
  * @returns {Object} A contact object.
- * @todo Get image url.
  */
 function getFormData() {
   const state = document.querySelector('#contact-state').value;
+  const contactPhotoURL = document.querySelector('#contact-photo').dataset.url;
   const contact = {
     FirstName: getValue('#contact-first-name'),
     LastName: getValue('#contact-last-name'),
@@ -282,6 +356,7 @@ function getFormData() {
     State: state === 'State' ? null : state,
     ZipCode: getValue('#contact-zip'),
     Notes: getValue('#contact-notes'),
+    ImageURL: contactPhotoURL,
   };
 
   return contact;

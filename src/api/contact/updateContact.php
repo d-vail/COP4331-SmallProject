@@ -26,6 +26,7 @@ function updateContact()
     $received_State = $inData["State"];
     $received_ZipCode = $inData["ZipCode"];
     $received_Notes = $inData["Notes"];
+    $received_ImageURL = $inData["ImageURL"];
 
     // Query the current values of the DB for the contact to be updated.
     // Compare current values with values passed from the front-end.
@@ -85,7 +86,7 @@ function updateContact()
 								SET FirstName = '$received_FirstName' , lastName = '$received_LastName' ,
 								Email = '$received_Email' , Phone = '$received_Phone' , Address = '$received_Address' ,
 								City = '$received_City' , State = '$received_State' , ZipCode = '$received_ZipCode' ,
-								Notes = '$received_Notes'
+								Notes = '$received_Notes', ImageURL = '$received_ImageURL'
 								WHERE Contacts.ID = $ID AND Contacts.Username = '$received_Username'";
 
         $stmt_UpdateContact = $db->prepare($sql_UpdateContact);
@@ -111,6 +112,7 @@ function updateContact()
                 "State" => $received_State,
                 "ZipCode" => $received_ZipCode,
                 "Notes" => $received_Notes,
+                "ImageURL" => $received_ImageURL,
             ]);
         }
 
