@@ -51,10 +51,10 @@ class Auth
      */
     public static function authenticate($user, $action)
     {
-        $headers = apache_request_headers();
+        $headers = array_change_key_case(apache_request_headers(), CASE_LOWER);
 
-        if (isset($headers['Authorization'])) {
-            $authHeader = explode(" ", $headers['Authorization']);
+        if (isset($headers['authorization'])) {
+            $authHeader = explode(" ", $headers['authorization']);
             $jwt = count($authHeader) < 2 ? $authHeader[0] : $authHeader[1];
             $jwtPayload = Auth::decodeJWT($jwt);
 
