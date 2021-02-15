@@ -18,3 +18,7 @@ define('DB_PASSWORD', $_ENV['DB_PASSWORD']);
 define('SECRET_KEY', $_ENV['SECRET_KEY']);
 
 define('AUTH_EXPIRATION', $_ENV['AUTH_EXPIRATION']);
+
+define('SPACES_KEY', $_ENV['SPACES_KEY']);
+
+define('SPACES_SECRET', $_ENV['SPACES_SECRET']);
