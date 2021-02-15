@@ -60,7 +60,7 @@ export function renderEmptyState() {
  * @param {string|null} data.prev - A link to the prev page or null if one does not exist.
  * @param {array} data.results - An array of contacts.
  */
-export function renderApp(data) {
+export function renderApp(data, handleMobileView = false) {
   const main = document.querySelector('main');
   const contacts = data.results;
 
@@ -71,7 +71,7 @@ export function renderApp(data) {
   main.className = 'flex-grow-1 flex-shrink-1 d-flex flex-row';
   renderContactList(contacts);
   renderPagination(data);
-  renderContactDetails(contacts[0]);
+  renderContactDetails(contacts[0], handleMobileView);
   scrollToTop();
 }
 
@@ -157,12 +157,13 @@ export function renderPagination(data) {
  * @param {string} contact.Notes - The contact's notes.
  * @param {string} contact.ImageURL - The url of the contact's image.
  */
-export function renderContactDetails(contact) {
+export function renderContactDetails(contact, handleMobileView = false) {
   const main = document.querySelector('main');
   const staleContactDetails = document.querySelector('.contact-details');
   const contactDetails = contactDetailsNode(contact);
   const deleteButton = contactDetails.querySelector('.edit-actions .delete');
   const editButton = contactDetails.querySelector('.edit-actions #editContact');
+  const mobileClose = contactDetails.querySelector('.contact-details .mobile-close');
 
   // Remove any stale contact detail containers.
   if (staleContactDetails != null)
@@ -174,6 +175,15 @@ export function renderContactDetails(contact) {
 
   editButton.dataset.id = contact.ID;
   editButton.addEventListener('click', setupEditModal);
+
+  // If on mobile, display as an overlay.
+  if (!handleMobileView && window.innerWidth < 992)
+    contactDetails.classList.add('d-block');
+  
+  mobileClose.addEventListener('click', () => {
+    const contactDetails = document.querySelector('.contact-details');
+    contactDetails.classList.remove('d-block');
+  });
 
   // Display contact details and mark contact as active in contact list.
   main.appendChild(contactDetails);

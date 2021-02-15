@@ -7086,8 +7086,13 @@ progress {
   padding: 0;
 }
 .list-group-item.active {
-  background-color: #CBD2D9;
   color: #323F4B;
+  background-color: #FFFFFF;
+}
+@media (min-width: 992px) {
+  .list-group-item.active {
+    background-color: #CBD2D9;
+  }
 }
 
 .pagination .page-links {
@@ -7257,6 +7262,14 @@ progress {
     display: block;
     position: relative;
     width: 70%;
+  }
+}
+.app .contact-details .mobile-close {
+  display: flex;
+}
+@media (min-width: 992px) {
+  .app .contact-details .mobile-close {
+    display: none;
   }
 }
 .app .contact-details .contact-details-header {

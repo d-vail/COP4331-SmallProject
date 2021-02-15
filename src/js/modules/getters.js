@@ -24,7 +24,7 @@ import { renderEmptyState, renderApp, renderContactDetails } from './views.js';
          ok: resp.ok,
          status: resp.status,
          body: await resp.json(),
-       });
+       }, true,);
      })
      .catch((err) => {
        console.log(err);
@@ -108,7 +108,7 @@ export function searchContacts() {
  * @param {unsigned short} response.status - The status code of the response.
  * @param {string} response.body - The body text of the response as JSON.
  */
-function handleLoadResponse(response) {
+function handleLoadResponse(response, handleMobileView = false) {
   // If action is not authorized, redirect to sign in page.
   if (response.status == 401) {
     deleteCookie('jwt');
@@ -120,7 +120,7 @@ function handleLoadResponse(response) {
   if (response.body.count == 0)
     renderEmptyState();
   else
-    renderApp(response.body);
+    renderApp(response.body, handleMobileView);
 }
 
 /**

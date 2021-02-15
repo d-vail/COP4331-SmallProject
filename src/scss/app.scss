@@ -94,6 +94,13 @@
       width: 70%;
     }
 
+    .mobile-close {
+      display: flex;
+      @include media-breakpoint-up(lg) {
+        display: none;
+      }
+    }
+
     .contact-details-header {
       display: flex;
       flex-direction: column;
