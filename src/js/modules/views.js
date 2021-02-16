@@ -6,6 +6,7 @@
 import {
   alertNode,
   emptyStateNode,
+  notFoundNode,
   contactListWrapperNode,
   contactListItemNode,
   contactDetailsNode,
@@ -51,6 +52,23 @@ export function renderEmptyState() {
 }
 
 /**
+ * Displays a not found message. notFoundNode
+ */
+export function renderNotFoundError() {
+  const main = document.querySelector('main');
+  const notFound = notFoundNode(
+    'Sorry. We can’t find anyone matching that name.'
+  );
+
+  // Remove any stale list and detail containers.
+  main.innerHTML = null;
+
+  // Display the empty state view.
+  main.className = 'flex-grow-1 flex-shrink-1';
+  main.appendChild(notFound);
+}
+
+/**
  * Display the complete app state.
  * @param {Object} data - The response data.
  * @param {integer} data.count - The total number of contacts for this user.
@@ -60,7 +78,7 @@ export function renderEmptyState() {
  * @param {string|null} data.prev - A link to the prev page or null if one does not exist.
  * @param {array} data.results - An array of contacts.
  */
-export function renderApp(data, handleMobileView = false) {
+export function renderApp(data) {
   const main = document.querySelector('main');
   const contacts = data.results;
 
@@ -71,7 +89,7 @@ export function renderApp(data, handleMobileView = false) {
   main.className = 'flex-grow-1 flex-shrink-1 d-flex flex-row';
   renderContactList(contacts);
   renderPagination(data);
-  renderContactDetails(contacts[0], handleMobileView);
+  renderContactDetails(contacts[0], true);
   scrollToTop();
 }
 
@@ -152,8 +170,9 @@ export function renderPagination(data) {
   numberedPageLinks.innerHTML = paginationLinksNode(
     username,
     parseInt(data.current),
-    parseInt(data.pages)
-  );
+    parseInt(data.pages),
+    data.prev,
+    data.next);
 
   // Attach event listeners to page links.
   const pageLinks = paginationControls.querySelectorAll('.page-link');
@@ -178,6 +197,8 @@ export function renderPagination(data) {
  * @param {string} contact.ZipCode - The contact's zip code.
  * @param {string} contact.Notes - The contact's notes.
  * @param {string} contact.ImageURL - The url of the contact's image.
+ * @param {boolean} handleMobileView - A boolean for whether or not the contact details should be
+ * rendered as a hidden overlay for mobile.
  */
 export function renderContactDetails(contact, handleMobileView = false) {
   const main = document.querySelector('main');

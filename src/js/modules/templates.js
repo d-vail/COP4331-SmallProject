@@ -2,6 +2,7 @@
  * @file The template functions are responsible for generating reusable HTML snippets. These are called
  * by view renders and event listeners.
  */
+import { MAX_PAGE_LINKS } from './config.js'
 
 /**
  * Creates an alert node with the given message.
@@ -26,6 +27,21 @@ export function emptyStateNode(message) {
   const template = `<img class="mt-5" src="images/undraw_empty_street_sfxm.svg" alt="Empty Contact Manager">
                     <p class="text-center my-4">${message}</p>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createEditContactModal" >Add Contact</button>`;
+
+  wrapper.className = 'empty-state d-flex flex-column align-items-center';
+  wrapper.innerHTML = template;
+
+  return wrapper;
+}
+
+/**
+ * Creates a not found node.
+ * @returns {Node} A DOM node.
+ */
+export function notFoundNode(message) {
+  const wrapper = document.createElement('div');
+  const template = `<img class="mt-5" src="images/undraw_not_found_60pq.svg" alt="404 Not Found">
+                    <p class="text-center my-4">${message}</p>`;
 
   wrapper.className = 'empty-state d-flex flex-column align-items-center';
   wrapper.innerHTML = template;
@@ -73,24 +89,26 @@ export function contactListWrapperNode() {
   return wrapper;
 }
 
-export function paginationLinksNode(username, current, pages) {
-  const maxNumLinks = 5;
-  let start = Math.max(1, current - 2);
-  let end = start + maxNumLinks - 1; 
+/**
+ * Creates page links for get all contacts pagination controls.
+ * @param {string} username - The current logged in user.
+ * @param {integer} current - The current page the GET request is on.
+ * @param {integer} pages - The total number of pages in the GET request.
+ * @param {string|null} prev - The previous GET request link.
+ * @param {string|null} next - The next GET request link.
+ * @returns {Node} A DOM node.
+ */
+export function paginationLinksNode(username, current, pages, prev, next) {
+  const start = getStartPageLinkRange(current, pages);
+  const end = getEndPageLinkRange(start, current, pages);
+  const isSearch = isSearchRequest(prev, next);
+  const query = isSearch ? getSearchQuery(prev, next) : '';
   let pageItems = '';
 
-  if (pages <= maxNumLinks) {
-    start = 1;
-    end = pages;
-  } else if (current + 2 > pages) {
-    start = current - (maxNumLinks - 1 - (pages - current));
-    end = pages;
-  }
-
   for (let i = start; i <= end; i++)
-      pageItems += `<li class="page-item ${current == i ? 'active' : ''}">
-                      <a class="page-link" href="/api/contact/loadContacts.php?Username=${username}&Page=${i}">${i}</a>
-                    </li>`;
+    pageItems += isSearch
+      ? searchPageLinkTemplate(username, current, i, query)
+      : pageLinkTemplate(username, current, i);
 
   const template = `<ul class="page-links m-0 p-0 d-flex">
                     ${pageItems}
@@ -284,4 +302,78 @@ function hasNotes(notes) {
  */
 function isEmpty(str) {
   return str == '' || str === null;
+}
+
+/**
+ * Pagination Links Helper. Calculate the number to start the pagination links at.
+ * @param {integer} current - The current page the GET request is on.
+ * @param {integer} pages - The total number of pages in the GET request.
+ * @returns {integer} The number to start pagination links on.
+ */
+function getStartPageLinkRange(current, pages) {
+  let start = Math.max(1, current - 2);
+
+  if (pages <= MAX_PAGE_LINKS)
+    start  = 1;
+  else if (current + 2 > pages)
+    start = current - (MAX_PAGE_LINKS - 1 - (pages - current));
+  
+  return start;
+}
+
+/**
+ * Pagination Links Helper. Calculate the number to start the pagination links at.
+ * @param {integer} start - Where the pagination links will start.
+ * @param {integer} current - The current page the GET request is on.
+ * @param {integer} pages - The total number of pages in the GET request.
+ * @returns {integer} The number to end the pagination links on.
+ */
+function getEndPageLinkRange(start, current, pages) {
+  let end = start + MAX_PAGE_LINKS - 1;
+
+  if (pages <= MAX_PAGE_LINKS || current + 2 > pages)
+    end = pages;
+
+  return end;
+}
+
+/** 
+ * Check if GET request is a get all or search request.
+ * @param {string|null} prev - The previous GET request link.
+ * @param {string|null} next - The next GET request link.
+ * @returns {boolean} A boolean indicating whether or not the request is a search request.
+ */
+function isSearchRequest(prev, next) {
+  return (
+    (prev || '').search('/api/contact/searchContact.php') != -1 ||
+    (next || '').search('/api/contact/searchContact.php') != -1
+  );
+}
+
+/** 
+ * Parse the search query from the prev or next link.
+ * @param {string|null} prev - The previous GET request link.
+ * @param {string|null} next - The next GET request link.
+ * @returns {string} The search query.
+ */
+function getSearchQuery(prev, next) {
+  const regex = /.+&Name=([^&]*)/;
+  let query = '';
+
+  if (prev) query = prev.match(regex)[1];
+  if (next) query = next.match(regex)[1];
+
+  return query;
+}
+
+function pageLinkTemplate(username, current, page) {
+  return `<li class="page-item ${current == page ? 'active' : ''}">
+            <a class="page-link" href="/api/contact/loadContacts.php?Username=${username}&Page=${page}">${page}</a>
+          </li>`;
+}
+
+function searchPageLinkTemplate(username, current, page, query) {
+  return `<li class="page-item ${current == page ? 'active' : ''}">
+            <a class="page-link" href="/api/contact/searchContact.php?Username=${username}&Name=${query}&Page=${page}">${page}</a>
+          </li>`;
 }

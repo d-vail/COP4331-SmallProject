@@ -6,7 +6,7 @@
 import { API_BASE, APP_BASE } from './config.js';
 import { getAuth } from './httprequests.js';
 import { getCookie, deleteCookie } from './cookies.js';
-import { renderEmptyState, renderApp, renderContactDetails } from './views.js';
+import { renderEmptyState, renderNotFoundError, renderApp, renderContactDetails } from './views.js';
 
  /**
   * Load the state for the application.
@@ -24,7 +24,7 @@ import { renderEmptyState, renderApp, renderContactDetails } from './views.js';
          ok: resp.ok,
          status: resp.status,
          body: await resp.json(),
-       }, true,);
+       });
      })
      .catch((err) => {
        console.log(err);
@@ -88,13 +88,27 @@ export function searchContacts() {
   event.preventDefault();
   const username = getCookie('username');
   const query = encodeURI(document.querySelector('#search-contacts').value);
-  const searchURL = `${API_BASE}/contact/searchContact.php?Username=${username}&Name=${query}`;
+  const token = getCookie('jwt');
+  const url =
+    query === ''
+      ? `${API_BASE}/contact/loadContacts.php?Username=${username}`
+      : `${API_BASE}/contact/searchContact.php?Username=${username}&Name=${query}`;
 
-  if (query === '') {
-    loadAppState();
-  } else {
-    loadAppState(searchURL);
-  }
+  getAuth(url, token)
+    .then(async (resp) => {
+      handleSearchResponse(
+        {
+          ok: resp.ok,
+          status: resp.status,
+          body: await resp.json(),
+        },
+        true
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log('TODO: Display 500 error whole page -- base off empty state');
+    });
 }
 
 // =================
@@ -108,7 +122,7 @@ export function searchContacts() {
  * @param {unsigned short} response.status - The status code of the response.
  * @param {string} response.body - The body text of the response as JSON.
  */
-function handleLoadResponse(response, handleMobileView = false) {
+function handleLoadResponse(response) {
   // If action is not authorized, redirect to sign in page.
   if (response.status == 401) {
     deleteCookie('jwt');
@@ -120,7 +134,27 @@ function handleLoadResponse(response, handleMobileView = false) {
   if (response.body.count == 0)
     renderEmptyState();
   else
-    renderApp(response.body, handleMobileView);
+    renderApp(response.body);
+}
+
+/**
+ * Maps actions to response from search request.
+ * @param {Object} response - Response object.
+ * @param {boolean} response.ok - A boolean indicating whether the response was successful.
+ * @param {unsigned short} response.status - The status code of the response.
+ * @param {string} response.body - The body text of the response as JSON.
+ */
+function handleSearchResponse(response) {
+  // If action is not authorized, redirect to sign in page.
+  if (response.status == 401) {
+    deleteCookie('jwt');
+    window.location.replace(APP_BASE);
+  }
+
+  // If no results were found, load 404 state view. Otherwise, load the list of contacts and
+  // display the details of the first contact in the list.
+  if (response.body.count == 0) renderNotFoundError();
+  else renderApp(response.body);
 }
 
 /**
