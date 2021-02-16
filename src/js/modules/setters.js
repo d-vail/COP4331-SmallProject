@@ -7,7 +7,7 @@ import { API_BASE, APP_BASE } from './config.js';
 import { postAuth, putAuth, delAuth } from './httprequests.js';
 import { getCookie, deleteCookie } from './cookies.js';
 import { loadAppState, getContacts } from './getters.js';
-import { renderAuthorizationError, renderContactDetails } from './views.js'
+import { renderAuthorizationError, renderContactDetails, renderContactListItem } from './views.js'
 
 /**
  * Setup add modal elements, inputs and event listeners and then display.
@@ -202,8 +202,6 @@ function handleCreateRequest(response) {
  * @param {boolean} response.ok - A boolean indicating whether the response was successful.
  * @param {unsigned short} response.status - The status code of the response.
  * @param {string} response.body - The body text of the response as JSON.
- * 
- * @todo fix - update selected contact name in contact list after edit.
  */
 function handleEditRequest(response) {
   // If action is not authorized, redirect to sign in page.
@@ -215,6 +213,7 @@ function handleEditRequest(response) {
   if (response.ok) {
     clearModalInputs();
     renderContactDetails(response.body);
+    renderContactListItem(response.body);
     closeModal();
   } else {
     renderAuthorizationError(
