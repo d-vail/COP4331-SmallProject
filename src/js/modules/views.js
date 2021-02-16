@@ -128,8 +128,9 @@ export function renderPagination(data) {
   numberedPageLinks.innerHTML = paginationLinksNode(
     username,
     parseInt(data.current),
-    parseInt(data.pages)
-  );
+    parseInt(data.pages),
+    data.prev,
+    data.next);
 
   // Attach event listeners to page links.
   const pageLinks = paginationControls.querySelectorAll('.page-link');
