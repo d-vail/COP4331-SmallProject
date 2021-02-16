@@ -24,7 +24,7 @@ import { renderEmptyState, renderNotFoundError, renderApp, renderContactDetails 
          ok: resp.ok,
          status: resp.status,
          body: await resp.json(),
-       }, true,);
+       });
      })
      .catch((err) => {
        console.log(err);
@@ -122,7 +122,7 @@ export function searchContacts() {
  * @param {unsigned short} response.status - The status code of the response.
  * @param {string} response.body - The body text of the response as JSON.
  */
-function handleLoadResponse(response, handleMobileView = false) {
+function handleLoadResponse(response) {
   // If action is not authorized, redirect to sign in page.
   if (response.status == 401) {
     deleteCookie('jwt');

@@ -78,7 +78,7 @@ export function renderNotFoundError() {
  * @param {string|null} data.prev - A link to the prev page or null if one does not exist.
  * @param {array} data.results - An array of contacts.
  */
-export function renderApp(data, handleMobileView = false) {
+export function renderApp(data) {
   const main = document.querySelector('main');
   const contacts = data.results;
 
@@ -89,7 +89,7 @@ export function renderApp(data, handleMobileView = false) {
   main.className = 'flex-grow-1 flex-shrink-1 d-flex flex-row';
   renderContactList(contacts);
   renderPagination(data);
-  renderContactDetails(contacts[0], handleMobileView);
+  renderContactDetails(contacts[0], true);
   scrollToTop();
 }
 
@@ -175,6 +175,8 @@ export function renderPagination(data) {
  * @param {string} contact.ZipCode - The contact's zip code.
  * @param {string} contact.Notes - The contact's notes.
  * @param {string} contact.ImageURL - The url of the contact's image.
+ * @param {boolean} handleMobileView - A boolean for whether or not the contact details should be
+ * rendered as a hidden overlay for mobile.
  */
 export function renderContactDetails(contact, handleMobileView = false) {
   const main = document.querySelector('main');
