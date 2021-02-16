@@ -100,6 +100,30 @@ export function renderContactList(contacts) {
   main.appendChild(contactListWrapper);
 }
 
+/**
+ * Update the contents of the given contact's preview.
+ * @param {Object} contact - Contact details.
+ * @param {string} contact.ID - The contact id.
+ * @param {string} contact.Username - The user this contact is attached to.
+ * @param {string} contact.FirstName - The contact's first name.
+ * @param {string} contact.LastName - The contact's last name.
+ * @param {string} contact.Email - The contact's email address.
+ * @param {string} contact.Phone - The contact's phone number.
+ * @param {string} contact.Address - The contact's street address.
+ * @param {string} contact.City - The contact's city.
+ * @param {string} contact.State - The contact's state.
+ * @param {string} contact.ZipCode - The contact's zip code.
+ * @param {string} contact.Notes - The contact's notes.
+ * @param {string} contact.ImageURL - The url of the contact's image.
+ */
+export function renderContactListItem(contact) {
+  const activeContactItem = document.querySelector('.contact-list .list-group-item.active');
+
+  // Update the name and image of the active contact.
+  activeContactItem.querySelector('h4').innerText = `${contact.FirstName} ${contact.LastName}`;
+  activeContactItem.querySelector('img').src = contact.ImageURL;
+}
+
 export function renderPagination(data) {
   const paginationControls = document.querySelector('.pagination');
   const prevPageItem = paginationControls.querySelector('.prev');
@@ -137,8 +161,6 @@ export function renderPagination(data) {
   for (let i = 0; i < pageLinks.length; i++)
     pageLinks[i].addEventListener('click', getContacts);
 }
-
-// Need finer controls to target just the list  items or just the pagination links
 
 /**
  * Display the contact details for the given contact and attach event listeners to edit and delete
