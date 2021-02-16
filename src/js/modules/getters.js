@@ -6,7 +6,7 @@
 import { API_BASE, APP_BASE } from './config.js';
 import { getAuth } from './httprequests.js';
 import { getCookie, deleteCookie } from './cookies.js';
-import { renderEmptyState, renderApp, renderContactDetails } from './views.js';
+import { renderEmptyState, renderNotFoundError, renderApp, renderContactDetails } from './views.js';
 
  /**
   * Load the state for the application.

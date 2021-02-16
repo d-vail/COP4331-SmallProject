@@ -6,6 +6,7 @@
 import {
   alertNode,
   emptyStateNode,
+  notFoundNode,
   contactListWrapperNode,
   contactListItemNode,
   contactDetailsNode,
@@ -48,6 +49,23 @@ export function renderEmptyState() {
   // Display the empty state view.
   main.className = 'flex-grow-1 flex-shrink-1';
   main.appendChild(emptyState);
+}
+
+/**
+ * Displays a not found message. notFoundNode
+ */
+export function renderNotFoundError() {
+  const main = document.querySelector('main');
+  const notFound = notFoundNode(
+    'Sorry. We can’t find anyone matching that name.'
+  );
+
+  // Remove any stale list and detail containers.
+  main.innerHTML = null;
+
+  // Display the empty state view.
+  main.className = 'flex-grow-1 flex-shrink-1';
+  main.appendChild(notFound);
 }
 
 /**
